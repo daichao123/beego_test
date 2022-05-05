@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3a1c827-178a-4f1e-9ff5-f6eeb3390bf5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/beego_test.exe" beforeDir="false" afterPath="$PROJECT_DIR$/beego_test.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/conf/app.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/redis.go" afterDir="false" />

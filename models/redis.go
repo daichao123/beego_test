@@ -14,8 +14,7 @@ func init() {
 	//redisPort, _ := beego.AppConfig.String("redisPort")
 	//redisPass, _ := beego.AppConfig.String("redisPass")
 	//redisDB, _ := beego.AppConfig.Int("redisDB")
-	//redisHost, _ := beego.AppConfig.String("redisHost")
-	//log.Fatal(redisHost)
+	//redisAddr := beego.AppConfig.String("redisAddr")
 	//redisPort, _ := beego.AppConfig.String("redisPort")
 	//var conn = beego.AppConfig.String("redisHost") + ":" + beego.AppConfig.String("redisPort")
 
@@ -23,6 +22,7 @@ func init() {
 		MaxIdle:     16,  //最初的连接数量
 		MaxActive:   0,   //连接池最大连接数量,不确定可以用0（0表示自动定义），按需分配
 		IdleTimeout: 300, //连接关闭时间 300秒 （300秒不使用自动关闭）
+		Wait:        true,
 		Dial: func() (redis.Conn, error) { //要连接的redis数据库
 			//dial, err2 := redis.Dial("tcp", "127.0.0.1:6379")
 			dial, err := redis.Dial("tcp", "127.0.0.1:6379")
