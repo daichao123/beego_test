@@ -17,7 +17,12 @@ func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", "root:root@tcp(127.0.0.1:3306)/golang_db?charset=utf8")
 	orm.RegisterModel(new(models.Users))
-	orm.Debug = true //开启debug 模式
+
+	if beego.BConfig.RunMode == "dev" {
+		orm.Debug = true //开启debug 模式
+	}
+
+	//链接redis
 
 }
 

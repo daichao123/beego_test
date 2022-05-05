@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"beego_test/models"
 	"beego_test/validate"
 	beego "github.com/beego/beego/v2/server/web"
+	"strings"
 )
 
 type JsonReturn struct {
@@ -31,6 +33,17 @@ func (c *UserController) Register() {
 		c.Data["json"] = JsonReturn{
 			Code:    10003,
 			Message: err.Error(),
+			Data:    nil,
+		}
+		c.ServeJSON(true)
+		c.StopRun()
+	}
+	addr := strings.Split(c.Ctx.Request.RemoteAddr, ":")
+	lock := models.Lock(addr[0], 5)
+	if lock != 1 {
+		c.Data["json"] = JsonReturn{
+			Code:    10003,
+			Message: "操作频繁",
 			Data:    nil,
 		}
 		c.ServeJSON(true)
