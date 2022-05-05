@@ -7,7 +7,7 @@ import (
 
 type JsonReturn struct {
 	Code    int         `json:"code"`
-	Message interface{} `json:"message"`
+	Message string      `json:"message"`
 	Data    interface{} `json:"data"` //Data字段需要设置为interface类型以便接收任意数据
 	//json标签意义是定义此结构体解析为json或序列化输出json时value字段对应的key值,如不想此字段被解析可将标签设为`json:"-"`
 }
@@ -30,7 +30,7 @@ func (c *UserController) Register() {
 	if err != nil {
 		c.Data["json"] = JsonReturn{
 			Code:    10003,
-			Message: err,
+			Message: err.Error(),
 			Data:    nil,
 		}
 		c.ServeJSON(true)
