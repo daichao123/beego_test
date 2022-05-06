@@ -36,6 +36,7 @@ func init() {
 	defer c.Close()
 }
 
+// Lock 获取锁  key 键  expireTime 过期时间 单位秒
 func Lock(key string, expireTime int) int {
 	client := Pool.Get()
 	n, _ := redis.Int(client.Do("SETNX", key, expireTime))
