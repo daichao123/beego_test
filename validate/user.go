@@ -9,7 +9,7 @@ import (
 
 type User struct {
 	Username       string `valid:"Required;MaxSize(20);Unique"`
-	Password       string `valid:"Required;MaxSize(20)"`
+	Password       string `valid:"Required;MaxSize(20);CheckPassword"`
 	InviteCode     string `valid:"Required;MaxSize(20)"`
 	Mobile         string `valid:"Required;MaxSize(20)"`
 	AuthCode       string `valid:"Required;MaxSize(6)"`

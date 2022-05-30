@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"github.com/gomodule/redigo/redis"
 	"log"
 	"time"
@@ -56,4 +57,30 @@ func Lock(key string, expireTime int) int {
 func Unlock(key string) {
 	client := Pool.Get()
 	client.Do("DEL", key)
+}
+
+// InsertVCode 保存发送验证码
+// account     发送账户
+// code        验证码
+// scene       应用场景
+func InsertVCode(account string, code string, scene string) error {
+	//code := tools.GetValidateCode(6)
+	client := Pool.Get()
+	_, err := client.Do("SET", account+"-"+scene, code)
+	if err != nil {
+		return errors.New("redis 设置错误")
+		//panic("CustomError#" + strconv.Itoa(200) + "#redis 设置错误")
+	} else {
+		return nil
+	}
+}
+
+// CheckVCode	检验验证码是否正确
+func CheckVCode(account string, VCode string, scene string) bool {
+	client := Pool.Get()
+	do, err := client.Do("GET", account+"-"+scene)
+	if err != nil {
+		return false
+	}
+	return VCode == do.(string)
 }

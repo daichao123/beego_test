@@ -3,6 +3,7 @@ package validate
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/beego/beego/v2/core/validation"
+	"regexp"
 )
 
 func InitValidate() {
@@ -41,8 +42,11 @@ func SetDefaultMessage() {
 		validation.MessageTmpls[k] = MessageTmpfs[k]
 	}
 	validation.AddCustomFunc("Unique", Unique)
+	validation.AddCustomFunc("CheckPassword", CheckPassword)
 }
 
+//	Unique 自定义验证方法 反正用户名重复
+//	可以优化成其他的过滤方法 不走mysql 数据库
 var Unique validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
 	//log.Fatal(obj)
 	o := orm.NewOrm()
@@ -53,4 +57,17 @@ var Unique validation.CustomFunc = func(validation *validation.Validation, obj i
 		//errors.New("用户名重复,请重试")
 		validation.AddError(key, "用户名重复,请重试")
 	}
+}
+
+// CheckPassword 检查密码是否满足要求
+var CheckPassword validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
+	findString := regexp.MustCompile(`/^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/`).FindString(obj.(string))
+	if findString == "" {
+		validation.AddError(key, "密码规则错误,请重试")
+	}
+}
+
+// CheckVCode 检验验证码
+var CheckVCode validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
+
 }

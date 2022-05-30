@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3a1c827-178a-4f1e-9ff5-f6eeb3390bf5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/components/mathUtil.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/mathUtil_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/block.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tools/string.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/beego_test.exe" beforeDir="false" afterPath="$PROJECT_DIR$/beego_test.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/validate/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/validate/common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/validate/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/validate/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +33,15 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/components/mathUtil.go" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/controllers/user.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Go/src/testing/benchmark.go" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/controllers/default.go" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/validate/user.go" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/validate/common.go" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routers/router.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/models/redis.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/logs/app.log" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/controllers/user.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/validate/user.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/validate/common.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/components/mathUtil_test.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routers/router.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/components/logger.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/tests/default_test.go" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/controllers/test.go" root0="FORCE_HIGHLIGHTING" />
@@ -61,7 +65,7 @@
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../go_project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
