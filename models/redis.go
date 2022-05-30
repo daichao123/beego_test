@@ -76,6 +76,9 @@ func InsertVCode(account string, code string, scene string) error {
 }
 
 // CheckVCode	检验验证码是否正确
+// account     发送账户
+// code        验证码
+// scene       应用场景
 func CheckVCode(account string, VCode string, scene string) bool {
 	client := Pool.Get()
 	do, err := client.Do("GET", account+"-"+scene)
