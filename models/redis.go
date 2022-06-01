@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	beego "github.com/beego/beego/v2/server/web"
 	"github.com/gomodule/redigo/redis"
 	"log"
 	"time"
@@ -80,10 +81,18 @@ func InsertVCode(account string, code string, scene string) error {
 // code        验证码
 // scene       应用场景
 func CheckVCode(account string, VCode string, scene string) bool {
+	if beego.BConfig.RunMode == "dev" {
+		return true
+	}
 	client := Pool.Get()
 	do, err := client.Do("GET", account+"-"+scene)
 	if err != nil {
 		return false
 	}
-	return VCode == do.(string)
+	if VCode == do.(string) {
+		client.Do("DEL", account+"-"+scene)
+		return true
+	} else {
+		return false
+	}
 }
