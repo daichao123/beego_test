@@ -25,7 +25,7 @@ func init() {
 		orm.Debug = true //开启debug 模式
 	}
 	beego.BConfig.RecoverPanic = true
-	beego.BConfig.RecoverFunc = RecoverPanic
+	//beego.BConfig.RecoverFunc = RecoverPanic
 	//链接redis
 
 }
