@@ -42,6 +42,7 @@ func (c *UserController) Register() {
 	if !res {
 		app.Error(&beego.Controller{}, 10003, nil, "邀请码错误")
 	}
+
 	//username := c.GetString("username")
 	//password := c.GetString("password")
 	//valid := validation.Validation{
