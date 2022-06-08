@@ -15,7 +15,7 @@ type Users struct {
 // AddUser insertUser
 func (*Users) AddUser(users *validate.User) error {
 	newOrm := orm.NewOrm()
-	newOrm.Begin()
+	//newOrm.Begin()
 	count, _ := newOrm.QueryTable("users").Filter("invite_code", users.InviteCode).Count()
 	if count <= 0 {
 		return errors.New("邀请码错误")

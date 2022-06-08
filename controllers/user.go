@@ -2,9 +2,8 @@ package controllers
 
 import (
 	"beego_test/models"
-	"beego_test/tools/app"
 	"beego_test/validate"
-	beego "github.com/beego/beego/v2/server/web"
+	"fmt"
 	"strings"
 )
 
@@ -16,7 +15,7 @@ type JsonReturn struct {
 }
 
 type UserController struct {
-	beego.Controller
+	BaseController
 }
 
 // Register 用户注册
@@ -31,16 +30,22 @@ func (c *UserController) Register() {
 	}
 	err := user.ValidateUser()
 	if err != nil {
-		app.Error(&beego.Controller{}, 10003, err, err.Error())
+		fmt.Println(err.Error())
+		msg := ReturnMsg{
+			Code:    10003,
+			Message: err.Error(),
+		}
+		c.Json(msg)
+		//app.Error(&beego.Controller{}, 10003, err, err.Error())
 	}
 	addr := strings.Split(c.Ctx.Request.RemoteAddr, ":")
 	lock := models.Lock(addr[0], 5)
 	if lock != 1 {
-		app.Error(&beego.Controller{}, 10003, nil, "操作频繁、请稍后再试")
+		//app.Error(&beego.Controller{}, 10003, nil, "操作频繁、请稍后再试")
 	}
 	res := models.CheckVCode(user.Username, user.InviteCode, "register")
 	if !res {
-		app.Error(&beego.Controller{}, 10003, nil, "邀请码错误")
+		//app.Error(&beego.Controller{}, 10003, nil, "邀请码错误")
 	}
 
 	//username := c.GetString("username")

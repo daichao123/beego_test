@@ -18,7 +18,8 @@ func init() {
 	components.InitLog()
 	//链接数据库
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:root@tcp(127.0.0.1:3306)/golang_db?charset=utf8")
+	orm.RegisterDataBase("default", "mysql", "root:root@tcp(127.0.0.1:3306)/api_test?charset=utf8")
+	orm.RegisterDataBase("user_service", "mysql", "root:root@tcp(127.0.0.1:3306)/user_service?charset=utf8")
 	orm.RegisterModel(new(models.Users))
 
 	if beego.BConfig.RunMode == "dev" {

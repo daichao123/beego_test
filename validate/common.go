@@ -1,9 +1,11 @@
 package validate
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/orm"
 	"github.com/beego/beego/v2/core/validation"
-	"regexp"
+	"github.com/dlclark/regexp2"
+	"log"
 )
 
 func InitValidate() {
@@ -49,9 +51,18 @@ func SetDefaultMessage() {
 //	可以优化成其他的过滤方法 不走mysql 数据库
 var Unique validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
 	//log.Fatal(obj)
+	//o := err
 	o := orm.NewOrm()
+	err := o.Using("user_service")
+	if err != nil {
+		log.Fatal(err)
+	}
+	driver := o.Driver()
+	name := driver.Name()
+	driverType := driver.Type()
+	//
+	fmt.Println(name, driverType)
 	//raw, _ := o.Raw("select count(id) as count from users where username =?", obj).Exec()
-
 	count, _ := o.QueryTable("users").Filter("username", obj).Count()
 	if count > 0 {
 		//errors.New("用户名重复,请重试")
@@ -61,13 +72,14 @@ var Unique validation.CustomFunc = func(validation *validation.Validation, obj i
 
 // CheckPassword 检查密码是否满足要求
 var CheckPassword validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
-	findString := regexp.MustCompile(`/^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/`).FindString(obj.(string))
-	if findString == "" {
+	compile, _ := regexp2.Compile("^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$", 0)
+	findString, _ := compile.FindStringMatch(obj.(string))
+	if findString != nil {
 		validation.AddError(key, "密码规则错误,请重试")
 	}
 }
 
 // CheckVCode 检验验证码
-var CheckVCode validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
-
-}
+//var CheckVCode validation.CustomFunc = func(validation *validation.Validation, obj interface{}, key string) {
+//
+//}
