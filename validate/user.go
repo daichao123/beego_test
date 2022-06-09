@@ -8,12 +8,12 @@ import (
 )
 
 type User struct {
-	Username       string `valid:"Required;MaxSize(20);Unique"`
-	Password       string `valid:"Required;MaxSize(20);CheckPassword"`
-	InviteCode     string `valid:"Required;MaxSize(20)"`
-	Mobile         string `valid:"Required;MaxSize(20)"`
-	AuthCode       string `valid:"Required;MaxSize(6)"`
-	RepeatPassword string `valid:"Required;MaxSize(20)"`
+	Username       string `json:"用户名" alias:"用户名" valid:"Required;MaxSize(20);Unique" `
+	Password       string `alias:"密码" valid:"Required;MaxSize(20);CheckPassword"`
+	InviteCode     string `alias:"邀请码" valid:"Required;MaxSize(20)"`
+	Mobile         string `alias:"手机号" valid:"Required;MaxSize(20)" `
+	AuthCode       string `alias:"验证码" valid:"Required;MaxSize(6)"`
+	RepeatPassword string `alias:"重复密码" valid:"Required;MaxSize(20)"`
 }
 
 func (validateUser *User) ValidateUser() (error error) {
@@ -24,10 +24,12 @@ func (validateUser *User) ValidateUser() (error error) {
 	}
 	if !b {
 		//获取到验证的结构体
+		//ref := reflect.TypeOf(User{})
 		ref := reflect.TypeOf(User{})
 		for _, e := range valid.Errors {
-			ref.FieldByName(e.Field)
-			return errors.New(e.Message)
+			filed, _ := ref.FieldByName(e.Field)
+			var alias = filed.Tag.Get("alias")
+			return errors.New(alias + e.Message)
 		}
 	}
 	return nil

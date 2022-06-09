@@ -66,7 +66,7 @@ var Unique validation.CustomFunc = func(validation *validation.Validation, obj i
 	count, _ := o.QueryTable("users").Filter("username", obj).Count()
 	if count > 0 {
 		//errors.New("用户名重复,请重试")
-		validation.AddError(key, "用户名重复,请重试")
+		validation.AddError("", "用户名重复,请重试")
 	}
 }
 
@@ -75,7 +75,7 @@ var CheckPassword validation.CustomFunc = func(validation *validation.Validation
 	compile, _ := regexp2.Compile("^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$", 0)
 	findString, _ := compile.FindStringMatch(obj.(string))
 	if findString != nil {
-		validation.AddError(key, "密码规则错误,请重试")
+		validation.AddError("", "密码规则错误,请重试")
 	}
 }
 

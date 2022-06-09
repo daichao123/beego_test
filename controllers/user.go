@@ -33,7 +33,7 @@ func (c *UserController) Register() {
 		fmt.Println(err.Error())
 		msg := ReturnMsg{
 			Code:    10003,
-			Message: err.Error(),
+			Message: strings.Join(strings.Fields(err.Error()), ""),
 		}
 		c.Json(msg)
 		//app.Error(&beego.Controller{}, 10003, err, err.Error())
