@@ -1,6 +1,8 @@
 package tools
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -69,4 +71,33 @@ func GetValidateCode(width int) string {
 		fmt.Fprintf(&sb, "%d", numeric[rand.Intn(r)])
 	}
 	return sb.String()
+}
+
+// GetRandString 获取指定长度随机字符串
+func GetRandString(length int) string {
+	var letters = []rune("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	runes := make([]rune, length)
+	rand.Seed(time.Now().UnixNano())
+	for i, _ := range letters {
+		runes[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(runes)
+}
+
+// GetRandStringByRune 指定字符串种子获取随机字符串
+func GetRandStringByRune(length int, letters []rune) string {
+	runes := make([]rune, length)
+	rand.Seed(time.Now().UnixNano())
+	for i, _ := range letters {
+		runes[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(runes)
+}
+
+func GetEncryptStringByMd5(passwordStr string, encryptStr string) string {
+	bytes := []byte(passwordStr + encryptStr)
+	hash := md5.New()
+	hash.Write(bytes)
+
+	return hex.EncodeToString(hash.Sum(nil))
 }

@@ -41,13 +41,37 @@ func (c *UserController) Register() {
 	addr := strings.Split(c.Ctx.Request.RemoteAddr, ":")
 	lock := models.Lock(addr[0], 5)
 	if lock != 1 {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "操作频繁",
+		})
 		//app.Error(&beego.Controller{}, 10003, nil, "操作频繁、请稍后再试")
 	}
 	res := models.CheckVCode(user.Username, user.InviteCode, "register")
 	if !res {
-		//app.Error(&beego.Controller{}, 10003, nil, "邀请码错误")
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "邀请码错误",
+		})
 	}
+	//isMainAccount, _ := c.GetBool("is_main_account")
+	//users := models.Users{
+	//	Username:      user.Username,
+	//	Password:      user.Password + tools.GetRandString(8),
+	//	Encrypt:       "",
+	//	Email:         "",
+	//	Mobile:        user.Mobile,
+	//	RegisterIp:    addr[0],
+	//	IsMainAccount: isMainAccount,
+	//}
+	//newOrm := orm.NewOrm()
+	//newOrm.Using("user_service")
 
+	//insert, err := err
+	//if err != nil && insert == 0 {
+	//	panic(err)
+	//}
+	//fmt.Println(insert)
 	//username := c.GetString("username")
 	//password := c.GetString("password")
 	//valid := validation.Validation{

@@ -17,6 +17,7 @@ func init() {
 	//初始化日志
 	components.InitLog()
 	//链接数据库
+	//md5 := tools.GetEncryptStringByMd5("123456", "")
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", "root:root@tcp(127.0.0.1:3306)/api_test?charset=utf8")
 	orm.RegisterDataBase("user_service", "mysql", "root:root@tcp(127.0.0.1:3306)/user_service?charset=utf8")
