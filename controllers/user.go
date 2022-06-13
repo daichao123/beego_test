@@ -38,7 +38,6 @@ func (c *UserController) Register() {
 			Message: strings.Join(strings.Fields(err.Error()), ""),
 		}
 		c.Json(msg)
-		//app.Error(&beego.Controller{}, 10003, err, err.Error())
 	}
 	addr := strings.Split(c.Ctx.Request.RemoteAddr, ":")
 	lock := models.Lock(addr[0], 5)
@@ -47,7 +46,6 @@ func (c *UserController) Register() {
 			Code:    10003,
 			Message: "操作频繁",
 		})
-		//app.Error(&beego.Controller{}, 10003, nil, "操作频繁、请稍后再试")
 	}
 	res := models.CheckVCode(user.Username, user.InviteCode, "register")
 	if !res {
@@ -82,18 +80,39 @@ func (c *UserController) Register() {
 		Message: "操作成功",
 		Data:    map[string]interface{}{"id": insert},
 	})
-	//fmt.Println(insert)
-	//username := c.GetString("username")
-	//password := c.GetString("password")
-	//valid := validation.Validation{........
-	//	RequiredFirst: false,
-	//	Errors:        nil,
-	//	ErrorsMap:     nil,
-	//}
-	//var message = map[string]string{
-	//	"Required": "参数不能为空",
-	//}
-	//validation.SetDefaultMessage(message)
+}
 
-	//valid.Required()
+func (c *UserController) Login() {
+	username := c.GetString("username", "")
+	password := c.GetString("password", "")
+	if username == "" && password == "" {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "参数错误",
+		})
+	}
+	usersModel := models.Users{
+		Username: username,
+	}
+	newOrm := orm.NewOrm()
+	newOrm.Using("user_service")
+	err := newOrm.Read(&usersModel)
+	if err == orm.ErrNoRows {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "数据未找到",
+		})
+	} else if err == orm.ErrMissPK {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "找不到主键",
+		})
+	}
+	if password != tools.GetEncryptStringByMd5(usersModel.Password, usersModel.Encrypt) {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "密码错误",
+		})
+	}
+	//使用JWT
 }
