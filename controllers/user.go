@@ -73,11 +73,15 @@ func (c *UserController) Register() {
 	newOrm := orm.NewOrm()
 	newOrm.Using("user_service")
 	insert, err := newOrm.Insert(&users)
-	//
-	//insert, err := err
 	if err != nil && insert == 0 {
 		panic(err)
 	}
+
+	c.Json(ReturnMsg{
+		Code:    200,
+		Message: "操作成功",
+		Data:    map[string]interface{}{"id": insert},
+	})
 	//fmt.Println(insert)
 	//username := c.GetString("username")
 	//password := c.GetString("password")
