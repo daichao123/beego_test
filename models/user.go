@@ -15,7 +15,7 @@ type Users struct {
 	Email         string    `json:"email" orm:"size(30)"`
 	Mobile        string    `json:"mobile" orm:"size(20)"`
 	RegisterIp    string    `json:"register_ip" orm:"size(20)"`
-	IsMainAccount bool      `json:"is_main_account" orm:"size(20)"`
+	IsMainAccount int       `json:"is_main_account" orm:"size(20)"`
 	CreatedAt     time.Time `json:"created_at" orm:"auto_now_add;type(timestamp)"`
 	UpdatedAt     time.Time `json:"updated_at" orm:"auto_now_add;type(timestamp)"`
 }
@@ -30,4 +30,8 @@ func (*Users) AddUser(users *validate.User) error {
 	}
 
 	return nil
+}
+
+func (u *Users) TableName() string {
+	return "users"
 }

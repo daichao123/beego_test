@@ -74,12 +74,15 @@ func GetValidateCode(width int) string {
 }
 
 // GetRandString 获取指定长度随机字符串
-func GetRandString(length int) string {
+func GetRandString(length int64) string {
 	var letters = []rune("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	runes := make([]rune, length)
 	rand.Seed(time.Now().UnixNano())
 	for i, _ := range letters {
 		runes[i] = letters[rand.Intn(len(letters))]
+		if i == int(length)-1 {
+			break
+		}
 	}
 	return string(runes)
 }

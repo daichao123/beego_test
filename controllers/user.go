@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"beego_test/models"
+	"beego_test/tools"
 	"beego_test/validate"
 	"fmt"
+	"github.com/astaxie/beego/orm"
 	"strings"
 )
 
@@ -54,27 +56,32 @@ func (c *UserController) Register() {
 			Message: "邀请码错误",
 		})
 	}
-	//isMainAccount, _ := c.GetBool("is_main_account")
-	//users := models.Users{
-	//	Username:      user.Username,
-	//	Password:      user.Password + tools.GetRandString(8),
-	//	Encrypt:       "",
-	//	Email:         "",
-	//	Mobile:        user.Mobile,
-	//	RegisterIp:    addr[0],
-	//	IsMainAccount: isMainAccount,
-	//}
-	//newOrm := orm.NewOrm()
-	//newOrm.Using("user_service")
-
+	isMainAccount, _ := c.GetBool("is_main_account")
+	isMainAccountInt := 0
+	if isMainAccount {
+		isMainAccountInt = 1
+	}
+	users := models.Users{
+		Username:      user.Username,
+		Password:      tools.GetEncryptStringByMd5(user.Password, tools.GetRandString(8)),
+		Encrypt:       "",
+		Email:         "",
+		Mobile:        user.Mobile,
+		RegisterIp:    addr[0],
+		IsMainAccount: isMainAccountInt,
+	}
+	newOrm := orm.NewOrm()
+	newOrm.Using("user_service")
+	insert, err := newOrm.Insert(&users)
+	//
 	//insert, err := err
-	//if err != nil && insert == 0 {
-	//	panic(err)
-	//}
+	if err != nil && insert == 0 {
+		panic(err)
+	}
 	//fmt.Println(insert)
 	//username := c.GetString("username")
 	//password := c.GetString("password")
-	//valid := validation.Validation{
+	//valid := validation.Validation{........
 	//	RequiredFirst: false,
 	//	Errors:        nil,
 	//	ErrorsMap:     nil,
