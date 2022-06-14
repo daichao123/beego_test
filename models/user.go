@@ -8,7 +8,7 @@ import (
 )
 
 type Users struct {
-	Id            int       `json:"id" orm:"id" example:"10"`
+	Id            int       `json:"id" orm:"pk;auto" example:"10"`
 	Username      string    `json:"username" orm:"size(60)"`
 	Password      string    `json:"password" orm:"size(20)"`
 	Encrypt       string    `json:"encrypt" orm:"size(20)"`

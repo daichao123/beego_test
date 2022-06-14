@@ -6,6 +6,7 @@ import (
 	"beego_test/validate"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"github.com/dgrijalva/jwt-go"
 	"strings"
 )
 
@@ -59,10 +60,11 @@ func (c *UserController) Register() {
 	if isMainAccount {
 		isMainAccountInt = 1
 	}
+	randString := tools.GetRandString(6)
 	users := models.Users{
 		Username:      user.Username,
-		Password:      tools.GetEncryptStringByMd5(user.Password, tools.GetRandString(8)),
-		Encrypt:       "",
+		Password:      tools.GetEncryptStringByMd5(user.Password, randString),
+		Encrypt:       randString,
 		Email:         "",
 		Mobile:        user.Mobile,
 		RegisterIp:    addr[0],
@@ -85,7 +87,7 @@ func (c *UserController) Register() {
 func (c *UserController) Login() {
 	username := c.GetString("username", "")
 	password := c.GetString("password", "")
-	if username == "" && password == "" {
+	if username == "" || password == "" {
 		c.Json(ReturnMsg{
 			Code:    10003,
 			Message: "参数错误",
@@ -96,7 +98,7 @@ func (c *UserController) Login() {
 	}
 	newOrm := orm.NewOrm()
 	newOrm.Using("user_service")
-	err := newOrm.Read(&usersModel)
+	err := newOrm.Read(&usersModel, "username")
 	if err == orm.ErrNoRows {
 		c.Json(ReturnMsg{
 			Code:    10003,
@@ -108,11 +110,46 @@ func (c *UserController) Login() {
 			Message: "找不到主键",
 		})
 	}
-	if password != tools.GetEncryptStringByMd5(usersModel.Password, usersModel.Encrypt) {
+	fmt.Println(tools.GetEncryptStringByMd5(password, usersModel.Encrypt), "==", usersModel.Password, "==", usersModel.Encrypt)
+	if tools.GetEncryptStringByMd5(password, usersModel.Encrypt) != usersModel.Password {
 		c.Json(ReturnMsg{
 			Code:    10003,
 			Message: "密码错误",
 		})
 	}
 	//使用JWT
+	token, seconds, time, refreshTime, err := tools.CreateToken(username, password, usersModel.Id, "beego_test")
+	if err != nil {
+		panic("token error")
+	}
+	c.Json(ReturnMsg{
+		Code:    200,
+		Message: "操作成功",
+		Data: map[string]interface{}{
+			"token":        token,
+			"seconds":      seconds,
+			"time":         time,
+			"refreshTime":  refreshTime,
+			"prefix_token": "Bearer",
+		},
+	})
+}
+
+//GetProfile 获取用户个人信息
+func (c *UserController) GetProfile() {
+	tokenString := c.Ctx.Request.Header["Authorization"]
+	token, err := tools.ParseToken(tokenString[0])
+	if err != nil {
+		c.Json(ReturnMsg{
+			Code:    10003,
+			Message: "token error",
+		})
+	}
+	claims := token.Claims.(jwt.MapClaims)
+	users := models.Users{Id: claims["uid"].(int)}
+	newOrm := orm.NewOrm()
+	newOrm.Using("user_service")
+	newOrm.Read(&users)
+	usersMap, _ := tools.StructToMap(users)
+	c.Json(ReturnMsg{Data: usersMap})
 }
