@@ -14,6 +14,7 @@ type Users struct {
 	Encrypt       string    `json:"encrypt" orm:"size(20)"`
 	Email         string    `json:"email" orm:"size(30)"`
 	Mobile        string    `json:"mobile" orm:"size(20)"`
+	Avatar        string    `json:"avatar" orm:"size(20)"`
 	RegisterIp    string    `json:"register_ip" orm:"size(20)"`
 	IsMainAccount int       `json:"is_main_account" orm:"size(20)"`
 	CreatedAt     time.Time `json:"created_at" orm:"auto_now_add;type(timestamp)"`

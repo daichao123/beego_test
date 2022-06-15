@@ -6,8 +6,10 @@ import (
 	"beego_test/validate"
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	beego "github.com/beego/beego/v2/server/web"
 	"github.com/dgrijalva/jwt-go"
 	"strings"
+	"time"
 )
 
 type JsonReturn struct {
@@ -146,10 +148,17 @@ func (c *UserController) GetProfile() {
 		})
 	}
 	claims := token.Claims.(jwt.MapClaims)
-	users := models.Users{Id: claims["uid"].(int)}
+	users := models.Users{Id: int(claims["uid"].(float64))}
 	newOrm := orm.NewOrm()
 	newOrm.Using("user_service")
 	newOrm.Read(&users)
+	//CreatedAt := time.Unix(users.CreatedAt.Unix(), 0).Format("2006-01-02 15:04:05")
+	//UpdatedAt := time.Unix(users.UpdatedAt.Unix(), 0).Format("2006-01-02 15:04:05")
+	//users.CreatedAt = CreatedAt
+	//users.UpdatedAt = UpdatedAt
 	usersMap, _ := tools.StructToMap(users)
-	c.Json(ReturnMsg{Data: usersMap})
+	usersMap["avatar"], _ = beego.AppConfig.String("baseImageUrl")
+	usersMap["created_time"] = time.Unix(users.CreatedAt.Unix(), 0).Format("2006-01-02 15:04:05")
+	usersMap["updated_time"] = time.Unix(users.UpdatedAt.Unix(), 0).Format("2006-01-02 15:04:05")
+	c.Json(ReturnMsg{Data: usersMap, Code: 200, Message: "操作成功"})
 }
