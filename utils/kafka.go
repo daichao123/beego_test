@@ -26,6 +26,7 @@ func init() {
 	_ = Instance()
 }
 
+// Instance 单例模式
 func Instance() *Producer {
 	if producerInstance != nil {
 		return producerInstance
@@ -41,6 +42,7 @@ func Instance() *Producer {
 	return producerInstance
 }
 
+// NewProducer 实例化生产者对象
 func NewProducer(kafkaAddr []string, showDebug bool) *Producer {
 	config := sarama.NewConfig()
 	config.Producer.Partitioner = sarama.NewRandomPartitioner
@@ -55,7 +57,7 @@ func NewProducer(kafkaAddr []string, showDebug bool) *Producer {
 	}
 	wg.Add(1)
 	go func() {
-		wg.Done()
+		defer wg.Done()
 		// config.Producer.Return.Errors = true 后一定要监听这个chan，默认大小256 如果满了就阻塞掉
 		for err := range producer.Errors() {
 			logs.Info("[kafka] [error] err=%s", err)
